@@ -1,6 +1,7 @@
 import pandas as pd
 import tensorflow as tf
 import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
 
 compressor = pd.read_csv('UDP4AC500.2017.04.28 14.48.44.csv', header=None)
 compressor_labels = pd.read_csv('UDP4AC500.2017.04.28 14.48.44_LABELS.csv', header=None)
@@ -13,10 +14,17 @@ print(compressor_labels)
 
 cols_to_norm = cols_to_norm.apply(lambda x: (x-x.min()) / (x.max()-x.min()))
 print(cols_to_norm)
-data=pd.DataFrame(cols_to_norm.values, columns = ["A", "B", "C", "D", "E","F"])
+x_data=pd.DataFrame(cols_to_norm.values, columns = ["A", "B", "C", "D", "E","F"])
 compr_labels = pd.DataFrame(compressor_labels.values, columns = ["label", "None"])
 compr_labels = compr_labels.drop(['None'], axis=1)
-print(data)
+#Zmiana wartości w kolumnie labels
+#0.0 na 0, 1.0 na 1, 0.5 na 2
+compr_labels = compr_labels.replace(0.0, 0) # zmiana 0.0 na 0
+compr_labels = compr_labels.replace(1.0, 1) # zmiana 1.0 na 1
+compr_labels = compr_labels.replace(0.5, 2) # zmiana 0.5 na 2
+#zmiana float64 na int 32
+compr_labels = compr_labels.astype('int32')
+print(x_data)
 print(compr_labels)
 ##Nr kolumny - nazwa zmiennnej - skrót/uwagi
 #19	ActSpeedCompressorTop -         ActSpCoTop
@@ -37,11 +45,38 @@ F = tf.feature_column.numeric_column('F')
 
 #data['A'].hist(bins=20)
 #plt.show()
-compr_labels['label'].hist(bins=20)
-plt.show()
+
+#Wykres
+#compr_labels['label'].hist(bins=20)
+#plt.show()
 
 feat_cols = [A,B,C,D,E,F]
 labels = compr_labels['label']
+labels
+X_train, X_test, y_train, y_test = train_test_split(x_data, labels, test_size=0.3,random_state=101)
+input_func = tf.estimator.inputs.pandas_input_fn(x=X_train,y=y_train,
+                                                 batch_size=10,num_epochs=1000,shuffle=True)
+model = tf.estimator.LinearClassifier(feature_columns=feat_cols,
+                                      n_classes=3)
+model.train(input_fn=input_func,steps=1000)
+eval_input_func = tf.estimator.inputs.pandas_input_fn(x=X_test,y=y_test,
+                                                      batch_size=10,
+                                                    num_epochs=1,
+                                                    shuffle=False)
+results = model.evaluate(eval_input_func)
+results
+print("Results")
+print(results)
 
+#sieć DNN
+
+dnn_model = tf.estimator.DNNClassifier(hidden_units=[20],
+                                       feature_columns=feat_cols,
+                                       n_classes=3)
+dnn_model.train(input_fn=input_func,steps=1000)
+eval_input_func = tf.estimator.inputs.pandas_input_fn(x=X_test,y=y_test,batch_size=10,num_epochs=1, shuffle=False)
+results_dnn = dnn_model.evaluate(eval_input_func)
+print("DNN Results")
+print(results_dnn)
 
 
