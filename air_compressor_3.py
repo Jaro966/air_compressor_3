@@ -106,7 +106,7 @@ dnn_model.train(input_fn=input_func,steps=1000)
 #evaluacja
 
 # inne zmienne - POCZĄTEK
-x_data,labels,feat_cols=feat_and_labe('UDP4AC500.2016.03.15 13.02.08.csv','UDP4AC500.2016.03.15 13.02.08_LABELS.csv')
+x_data,labels,feat_cols=feat_and_labe('UDP4AC500.2016.03.15 13.02.08_JEDYNKI.csv','UDP4AC500.2016.03.15 13.02.08_JEDYNKI_LABELS.csv')
 X_train, X_test, y_train, y_test = train_test_split(x_data, labels, test_size=0.3,random_state=101)
 # INNE ZMIENNE - KONIEC
 
