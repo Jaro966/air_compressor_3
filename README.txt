@@ -1,2 +1,2 @@
 a_r_1:
-	Sieæ DNN liczy z dok³adnoœci¹ 0,99245167.
+	Zaktualizowane z a_r_2 - niedziela 9.06.2019

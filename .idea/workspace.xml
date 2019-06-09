@@ -13,8 +13,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/air_compressor_3.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="266">
-              <caret line="116" lean-forward="true" selection-start-line="116" selection-end-line="116" />
+            <state relative-caret-position="320">
+              <caret line="109" column="99" lean-forward="true" selection-start-line="109" selection-end-line="109" selection-end-column="99" />
               <folding>
                 <element signature="e#0#19#0" expanded="true" />
               </folding>
@@ -22,7 +22,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/.gitignore">
           <provider selected="true" editor-type-id="text-editor">
 <<<<<<< HEAD
@@ -30,7 +30,11 @@
               <caret line="25" lean-forward="true" selection-start-line="25" selection-end-line="25" />
 =======
             <state relative-caret-position="180">
+<<<<<<< HEAD
               <caret line="9" column="40" lean-forward="true" selection-end-line="9" selection-end-column="40" />
+>>>>>>> a_r_2
+=======
+              <caret line="9" column="40" lean-forward="true" selection-start-line="9" selection-start-column="40" selection-end-line="9" selection-end-column="40" />
 >>>>>>> a_r_2
             </state>
           </provider>
@@ -60,8 +64,8 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/pomocniczy.py" />
-        <option value="$PROJECT_DIR$/air_compressor_3.py" />
         <option value="$PROJECT_DIR$/.gitignore" />
+        <option value="$PROJECT_DIR$/air_compressor_3.py" />
       </list>
     </option>
   </component>
@@ -120,12 +124,17 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
+<<<<<<< HEAD
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="7" />
 <<<<<<< HEAD
     <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.23802084" />
 =======
+=======
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <editor active="true" />
+>>>>>>> a_r_2
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.23802084" />
 >>>>>>> a_r_2
@@ -166,8 +175,8 @@
 >>>>>>> a_r_2
     <entry file="file://$PROJECT_DIR$/air_compressor_3.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="266">
-          <caret line="116" lean-forward="true" selection-start-line="116" selection-end-line="116" />
+        <state relative-caret-position="320">
+          <caret line="109" column="99" lean-forward="true" selection-start-line="109" selection-end-line="109" selection-end-column="99" />
           <folding>
             <element signature="e#0#19#0" expanded="true" />
           </folding>
@@ -179,7 +188,7 @@
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="180">
-          <caret line="9" column="40" lean-forward="true" selection-end-line="9" selection-end-column="40" />
+          <caret line="9" column="40" lean-forward="true" selection-start-line="9" selection-start-column="40" selection-end-line="9" selection-end-column="40" />
         </state>
       </provider>
     </entry>
