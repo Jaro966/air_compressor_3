@@ -5,8 +5,10 @@ from sklearn.model_selection import train_test_split
 
 
 
-file_features='UDP4AC500.2017.04.28 14.48.44.csv'
-file_labels='UDP4AC500.2017.04.28 14.48.44_LABELS.csv'
+file_features='UDP4AC500.2017.08.21 14.24.26.csv'
+file_labels='UDP4AC500.2017.08.21 14.24.26_LABELS.csv'
+
+
 
 #funkcja przekazuje pliki z danymi uczącymi
 # i zwraca dane przygotowane dla biblioteki tensorflow
@@ -17,12 +19,16 @@ def feat_and_labe(file_features, file_labels):
 
 
     #Wybór danych istotnych dla pracy urządzenia (kolumn)
-    cols_to_norm = compressor.iloc[:,[19,21,24,5,33,38]]
-    #wywalone kolumny 20 i 22
+    cols_to_norm = compressor.iloc[:,[19,21,24,25,33,38]] #19,20,21,22,24,25,33,38
+    #UWAGa: w kolumnach 20 i 22 mogą być wszędzie 0
     print(cols_to_norm)
     print(compressor_labels)
 
-    cols_to_norm = cols_to_norm.apply(lambda x: (x-x.min()) / (x.max()-x.min()))
+    #funkcja normalizująca dane (ustawiająca wartości w zakresie 0-1)
+    cols_to_norm = cols_to_norm.apply(lambda x: x if x.max()==x.min() else ((x-x.min()) / (x.max()-x.min())))
+
+
+
     print(cols_to_norm)
     x_data=pd.DataFrame(cols_to_norm.values, columns = ["A", "B", "C", "D", "E","F"])
     compr_labels = pd.DataFrame(compressor_labels.values, columns = ["label", "None"])
@@ -52,6 +58,8 @@ def feat_and_labe(file_features, file_labels):
     D = tf.feature_column.numeric_column('D')
     E = tf.feature_column.numeric_column('E')
     F = tf.feature_column.numeric_column('F')
+    #G = tf.feature_column.numeric_column('G')
+    #H = tf.feature_column.numeric_column('H')
 
     #data['A'].hist(bins=20)
     #plt.show()
@@ -60,7 +68,7 @@ def feat_and_labe(file_features, file_labels):
     #compr_labels['label'].hist(bins=20)
     #plt.show()
 
-    feat_cols = [A,B,C,D,E,F]
+    feat_cols = [A,B,C,D,E,F] #A,B,C,D,E,F,G,H
     labels = compr_labels['label']
     labels
     return x_data,labels, feat_cols
@@ -73,7 +81,7 @@ input_func = tf.estimator.inputs.pandas_input_fn(x=X_train,y=y_train,
                                                  batch_size=10,num_epochs=1000,shuffle=True)
 #LinearClassifier
 model = tf.estimator.LinearClassifier(feature_columns=feat_cols,
-                                      n_classes=3)
+                                      n_classes=2)
 model.train(input_fn=input_func,steps=1000)
 eval_input_func = tf.estimator.inputs.pandas_input_fn(x=X_test,y=y_test,
                                                       batch_size=10,
@@ -92,13 +100,13 @@ print(results)
 
 dnn_model = tf.estimator.DNNClassifier(hidden_units=[20,20,20],
                                        feature_columns=feat_cols,
-                                       n_classes=3)
+                                       n_classes=2)
 dnn_model.train(input_fn=input_func,steps=1000)
 
 #evaluacja
 
 # inne zmienne - POCZĄTEK
-x_data,labels,feat_cols=feat_and_labe('UDP4AC500.2017.08.21 14.24.26.csv','UDP4AC500.2017.08.21 14.24.26_LABELS.csv')
+x_data,labels,feat_cols=feat_and_labe('UDP4AC500.2016.03.15 13.02.08.csv','UDP4AC500.2016.03.15 13.02.08_LABELS.csv')
 X_train, X_test, y_train, y_test = train_test_split(x_data, labels, test_size=0.3,random_state=101)
 # INNE ZMIENNE - KONIEC
 
