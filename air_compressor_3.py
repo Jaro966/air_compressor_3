@@ -2,12 +2,33 @@ import pandas as pd
 import tensorflow as tf
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
+import os
 
 
 
 file_features='UDP4AC500.2017.08.21 14.24.26.csv'
 file_labels='UDP4AC500.2017.08.21 14.24.26_LABELS.csv'
 
+
+
+
+#funkcja wczytuje do 2-óch tablic
+#nazwy pliku z danymi i nazwy pliku z odpowiednimi klasami labels
+#zwraca tablice
+def arrs_filenames(directory, csv_feature,csv_label):
+    arr = os.listdir(directory)
+    arr = sorted(arr)
+    print(len(arr))
+    csv_feature = [None] * len(arr)
+    csv_label = [None] * len(arr)
+    for i in range(0, len(arr), 2):
+        print(i)
+        # print(arr[i])
+        csv_feature[i] = arr[i]
+        csv_label[i] = arr[i + 1]
+        print(csv_feature[i])
+        print(csv_label[i])
+    return csv_feature,csv_label
 
 
 #funkcja przekazuje pliki z danymi uczącymi
@@ -73,10 +94,21 @@ def feat_and_labe(file_features, file_labels):
     labels
     return x_data,labels, feat_cols
 
+#wczytywane są nazwy plików z danymi (features) i etykietami (labels)
+#do 2-óch tablic: csv_feature, csv_label
+#dane: csv_feature[n],  etykiety: csv_label[n]
 
+directory='F:\\2_Praca_dyplomowa\\1_Zrodla_polaczone'#nazwa katalogu z plikami danych
+arr = os.listdir(directory)#wczytuje do tablicy nazwy wszystkich plików z danymi
+arr = sorted(arr) #sortuje alfabetycznie nazwy plików
+csv_feature = [None] * len(arr) #tworzy tablicę z nazwami plików zawierających dane (feature)
+csv_label = [None] * len(arr) #tworzy tablicę z nazwami plików zawierających klasy (labels)
+csv_feature, csv_label = arrs_filenames(directory,csv_feature,csv_label)#funkcja wczytująca nazwy plików danych (features)
+                                                                        # i plików z etykietami (labels) do 2-óch  tablic
 
-x_data,labels,feat_cols=feat_and_labe(file_features,file_labels)
-X_train, X_test, y_train, y_test = train_test_split(x_data, labels, test_size=0.3,random_state=101)
+x_data,labels,feat_cols=feat_and_labe(file_features,file_labels)# funkcja generująca tablice danych (definicja powyżej)
+X_train, X_test, y_train, y_test = train_test_split(x_data, labels, test_size=0.3,random_state=101) # zbiory trenujące
+                                                                                                    # i testujące
 input_func = tf.estimator.inputs.pandas_input_fn(x=X_train,y=y_train,
                                                  batch_size=10,num_epochs=1000,shuffle=True)
 #LinearClassifier
@@ -107,7 +139,7 @@ dnn_model.train(input_fn=input_func,steps=1000)
 
 # inne zmienne - POCZĄTEK
 x_data,labels,feat_cols=feat_and_labe('UDP4AC500.2016.03.15 13.02.08_JEDYNKI.csv','UDP4AC500.2016.03.15 13.02.08_JEDYNKI_LABELS.csv')
-X_train, X_test, y_train, y_test = train_test_split(x_data, labels, test_size=0.3,random_state=101)
+X_train, X_test, y_train, y_test = train_test_split(x_data, labels, test_size=0.9,random_state=101)
 # INNE ZMIENNE - KONIEC
 
 eval_input_func = tf.estimator.inputs.pandas_input_fn(x=X_test,y=y_test,batch_size=10,num_epochs=1, shuffle=False)
