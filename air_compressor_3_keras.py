@@ -2,6 +2,10 @@ import pandas as pd
 import tensorflow as tf
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
+from tensorflow.contrib.keras import models
+from tensorflow.contrib.keras import layers
+from tensorflow.contrib.keras import losses,optimizers,metrics,activations
+from sklearn.metrics import classification_report
 import os
 
 
@@ -108,44 +112,14 @@ csv_feature, csv_label = arrs_filenames(directory,csv_feature,csv_label)#funkcja
 
 x_data,labels,feat_cols=feat_and_labe(file_features,file_labels)# funkcja generująca tablice danych (definicja powyżej)
 X_train, X_test, y_train, y_test = train_test_split(x_data, labels, test_size=0.3,random_state=101) # zbiory trenujące
-                                                                                                    # i testujące
-input_func = tf.estimator.inputs.pandas_input_fn(x=X_train,y=y_train,
-                                                 batch_size=10,num_epochs=1000,shuffle=True)
-#LinearClassifier
-model = tf.estimator.LinearClassifier(feature_columns=feat_cols,
-                                      n_classes=2)
-model.train(input_fn=input_func,steps=1000)
-eval_input_func = tf.estimator.inputs.pandas_input_fn(x=X_test,y=y_test,
-                                                      batch_size=10,
-                                                    num_epochs=1,
-                                                    shuffle=False)
-results = model.evaluate(eval_input_func)
-results
-print("Results")
-print(results)
+# i testujące
 
-#sieć DNN
-#def train_DNN(x_data,labels,feat_cols)
-#funkcja budująca sieć neuronową DNN(deep neural network)
-#domyślna funkcja aktywacji = relu
-
-
-dnn_model = tf.estimator.DNNClassifier(hidden_units=[20,20,20],
-                                       feature_columns=feat_cols,
-                                       n_classes=2)
-dnn_model.train(input_fn=input_func,steps=1000)
-
-
-#evaluacja
-
-# inne zmienne - POCZĄTEK
-x_data,labels,feat_cols=feat_and_labe('UDP4AC500.2016.03.15 13.02.08_JEDYNKI.csv','UDP4AC500.2016.03.15 13.02.08_JEDYNKI_LABELS.csv')
-X_train, X_test, y_train, y_test = train_test_split(x_data, labels, test_size=0.9,random_state=101)
-# INNE ZMIENNE - KONIEC
-
-eval_input_func = tf.estimator.inputs.pandas_input_fn(x=X_test,y=y_test,batch_size=10,num_epochs=1, shuffle=False)
-results_dnn = dnn_model.evaluate(eval_input_func)
-print("DNN Results_EVALUATION")
-print(results_dnn)
-
-
+dnn_keras_model = models.Sequential()
+dnn_keras_model.add(layers.Dense(units=15,input_dim=6,activation='relu'))
+dnn_keras_model.add(layers.Dense(units=15,activation='relu'))
+dnn_keras_model.add(layers.Dense(units=15,activation='relu'))
+dnn_keras_model.add(layers.Dense(units=2,activation='softmax'))
+dnn_keras_model.compile(optimizer='adam',loss='sparse_categorical_crossentropy', metrics=['accuracy'])
+dnn_keras_model.fit(X_train,y_train,epochs=1)
+predictions = dnn_keras_model.predict_classes(X_test)
+print(classification_report(predictions,y_test))
