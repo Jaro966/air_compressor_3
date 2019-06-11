@@ -123,3 +123,4 @@ dnn_keras_model.compile(optimizer='adam',loss='sparse_categorical_crossentropy',
 dnn_keras_model.fit(X_train,y_train,epochs=1)
 predictions = dnn_keras_model.predict_classes(X_test)
 print(classification_report(predictions,y_test))
+dnn_keras_model.summary()
