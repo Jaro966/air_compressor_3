@@ -9,7 +9,7 @@ from sklearn.metrics import classification_report
 import os
 
 
-
+directory='F:\\2_Praca_dyplomowa\\1_Zrodla_polaczone'#nazwa katalogu z plikami danych
 file_features='UDP4AC500.2017.08.21 14.24.26.csv'
 file_labels='UDP4AC500.2017.08.21 14.24.26_LABELS.csv'
 
@@ -19,21 +19,20 @@ file_labels='UDP4AC500.2017.08.21 14.24.26_LABELS.csv'
 #funkcja wczytuje do 2-óch tablic
 #nazwy pliku z danymi i nazwy pliku z odpowiednimi klasami labels
 #zwraca tablice
+
 def arrs_filenames(directory, csv_feature,csv_label):
     arr = os.listdir(directory)
     arr = sorted(arr)
     print(len(arr))
-    csv_feature = [None] * len(arr)
-    csv_label = [None] * len(arr)
     for i in range(0, len(arr), 2):
         print(i)
-        # print(arr[i])
-        csv_feature[i] = arr[i]
-        csv_label[i] = arr[i + 1]
-        print(csv_feature[i])
-        print(csv_label[i])
+        n=int(i/2)
+        print(n)
+        csv_feature[n] = directory + '\\'+ arr[i]
+        csv_label[n] = directory + '\\' + arr[i + 1]
+        print(csv_feature[n])
+        print(csv_label[n])
     return csv_feature,csv_label
-
 
 #funkcja przekazuje pliki z danymi uczącymi
 # i zwraca dane przygotowane dla biblioteki tensorflow
@@ -102,11 +101,11 @@ def feat_and_labe(file_features, file_labels):
 #do 2-óch tablic: csv_feature, csv_label
 #dane: csv_feature[n],  etykiety: csv_label[n]
 
-directory='F:\\2_Praca_dyplomowa\\1_Zrodla_polaczone'#nazwa katalogu z plikami danych
+
 arr = os.listdir(directory)#wczytuje do tablicy nazwy wszystkich plików z danymi
 arr = sorted(arr) #sortuje alfabetycznie nazwy plików
-csv_feature = [None] * len(arr) #tworzy tablicę z nazwami plików zawierających dane (feature)
-csv_label = [None] * len(arr) #tworzy tablicę z nazwami plików zawierających klasy (labels)
+csv_feature = [None] * int(len(arr)/2) #tworzy tablicę z nazwami plików zawierających dane (feature)
+csv_label = [None] * int(len(arr)/2) #tworzy tablicę z nazwami plików zawierających klasy (labels)
 csv_feature, csv_label = arrs_filenames(directory,csv_feature,csv_label)#funkcja wczytująca nazwy plików danych (features)
                                                                         # i plików z etykietami (labels) do 2-óch  tablic
 
@@ -119,11 +118,15 @@ dnn_keras_model.add(layers.Dense(units=15,activation='relu'))
 dnn_keras_model.add(layers.Dense(units=3,activation='softmax'))
 dnn_keras_model.compile(optimizer='adam',loss='sparse_categorical_crossentropy', metrics=['accuracy'])
 
-for i in range(4): #może być użyta również tablica csv_labels ponieważ ma tyle samo elementów
+for i in range(10): #może być użyta również tablica csv_labels ponieważ ma tyle samo elementów
     #x_data,labels,feat_cols=feat_and_labe(file_features,file_labels)# funkcja generująca tablice danych (definicja powyżej)
-    x_data,labels,feat_cols=feat_and_labe(csv_feature[i],csv_label[i])# funkcja generująca tablice danych (definicja powyżej)
+    print(csv_feature[i])
+    print(csv_label[i])
+    x_data,labels,feat_cols=feat_and_labe('F:\\2_Praca_dyplomowa\\1_Zrodla_polaczone\\UDP4AC500.2016.03.11 11.34.28.csv',
+                                         'F:\\2_Praca_dyplomowa\\1_Zrodla_polaczone\\UDP4AC500.2016.03.11 11.34.28_LABELS.csv')# funkcja generująca tablice danych (definicja powyżej)
     X_train, X_test, y_train, y_test = train_test_split(x_data, labels, test_size=0.4,random_state=101) # zbiory trenujące
     # i testujące
+
 
     dnn_keras_model.fit(X_train,y_train,epochs=1)
 
@@ -134,5 +137,10 @@ for i in range(4): #może być użyta również tablica csv_labels ponieważ ma 
     print(classification_report(predictions,y_test))
     dnn_keras_model.summary()
 
-x_data,labels,feat_cols=feat_and_labe('UDP4AC500.2016.03.15 13.02.08_JEDYNKI.csv','UDP4AC500.2016.03.15 13.02.08_JEDYNKI_LABELS.csv')
-X_train, X_test, y_train, y_test = train_test_split(x_data, labels, test_size=0.9,random_state=101)
+#x_data,labels,feat_cols=feat_and_labe('UDP4AC500.2016.03.15 13.02.08_JEDYNKI.csv','UDP4AC500.2016.03.15 13.02.08_JEDYNKI_LABELS.csv')
+#X_train, X_test, y_train, y_test = train_test_split(x_data, labels, test_size=0.9,random_state=101)
+
+
+#predictions = dnn_keras_model.predict_classes(X_test)
+#print(classification_report(predictions,y_test))
+#dnn_keras_model.summary()
