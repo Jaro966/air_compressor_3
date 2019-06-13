@@ -9,8 +9,7 @@ from sklearn.metrics import classification_report
 import os
 
 directory='F:\\2_Praca_dyplomowa\\1_Zrodla_polaczone'#nazwa katalogu z plikami danych
-file_features='UDP4AC500.2017.08.21 14.24.26.csv'
-file_labels='UDP4AC500.2017.08.21 14.24.26_LABELS.csv'
+
 
 arr = os.listdir(directory)#wczytuje do tablicy nazwy wszystkich plików z danymi
 arr = sorted(arr) #sortuje alfabetycznie nazwy plików
@@ -37,31 +36,37 @@ def arrs_filenames(directory, csv_feature,csv_label):
 
 def feat_and_labe(file_features, file_labels):
     #Features
-    compressor = pd.read_csv(file_features[1], header=None)
+    compressor = pd.read_csv(file_features[0], header=None)
     cols_to_norm = compressor.iloc[:,[19,21,24,25,33,38]] #19,20,21,22,24,25,33,38
     #Labels
-    compressor_labels = pd.read_csv(file_labels[1], header=None)
+    compressor_labels = pd.read_csv(file_labels[0], header=None)
     i=1
-    while i<len(file_labels):
-        compressor = pd.read_csv(file_features[0], header=None)
+    while i<len(csv_feature): #UWAGA: zmienić na : len(csv_feature):
+
+        compressor = pd.read_csv(file_features[i], header=None)
         cols_to_norm_1 = compressor.iloc[:, [19, 21, 24, 25, 33, 38]]
         cols_to_norm = cols_to_norm.append(cols_to_norm_1)
+
+        compressor_labels_1=pd.read_csv(file_labels[i], header=None)
+        compressor_labels = compressor_labels.append(compressor_labels_1)
         i=i+1
     return cols_to_norm, compressor_labels
 
 csv_feature, csv_label = arrs_filenames(directory,csv_feature,csv_label)
 
 
-
-print(csv_feature[0])
-print(csv_label[0])
-
 x_data, labels=feat_and_labe(csv_feature,csv_label)
 print('x_data')
 
 n=0
 #pd.set_option('display.max_rows', len(x_data))
+print('FEATURES')
 print(x_data)
+print('LABELS')
+print(labels)
 #pd.reset_option('display.max_rows')
+
+print(len(csv_feature))
+print(len(csv_label))
 
 

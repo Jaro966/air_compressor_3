@@ -118,24 +118,23 @@ dnn_keras_model.add(layers.Dense(units=15,activation='relu'))
 dnn_keras_model.add(layers.Dense(units=3,activation='softmax'))
 dnn_keras_model.compile(optimizer='adam',loss='sparse_categorical_crossentropy', metrics=['accuracy'])
 
-for i in range(10): #może być użyta również tablica csv_labels ponieważ ma tyle samo elementów
-    #x_data,labels,feat_cols=feat_and_labe(file_features,file_labels)# funkcja generująca tablice danych (definicja powyżej)
-    print(csv_feature[i])
-    print(csv_label[i])
-    x_data,labels,feat_cols=feat_and_labe('F:\\2_Praca_dyplomowa\\1_Zrodla_polaczone\\UDP4AC500.2016.03.11 11.34.28.csv',
+
+#x_data,labels,feat_cols=feat_and_labe(file_features,file_labels)# funkcja generująca tablice danych (definicja powyżej)
+
+x_data,labels,feat_cols=feat_and_labe('F:\\2_Praca_dyplomowa\\1_Zrodla_polaczone\\UDP4AC500.2016.03.11 11.34.28.csv',
                                          'F:\\2_Praca_dyplomowa\\1_Zrodla_polaczone\\UDP4AC500.2016.03.11 11.34.28_LABELS.csv')# funkcja generująca tablice danych (definicja powyżej)
-    X_train, X_test, y_train, y_test = train_test_split(x_data, labels, test_size=0.4,random_state=101) # zbiory trenujące
+X_train, X_test, y_train, y_test = train_test_split(x_data, labels, test_size=0.4,random_state=101) # zbiory trenujące
     # i testujące
 
 
-    dnn_keras_model.fit(X_train,y_train,epochs=1)
+dnn_keras_model.fit(X_train,y_train,epochs=1)
 
 #x_data,labels,feat_cols=feat_and_labe('UDP4AC500.2016.03.15 13.02.08_JEDYNKI.csv','UDP4AC500.2016.03.15 13.02.08_JEDYNKI_LABELS.csv')
 #X_train, X_test, y_train, y_test = train_test_split(x_data, labels, test_size=0.9,random_state=101)
 
-    predictions = dnn_keras_model.predict_classes(X_test)
-    print(classification_report(predictions,y_test))
-    dnn_keras_model.summary()
+predictions = dnn_keras_model.predict_classes(X_test)
+print(classification_report(predictions,y_test))
+dnn_keras_model.summary()
 
 #x_data,labels,feat_cols=feat_and_labe('UDP4AC500.2016.03.15 13.02.08_JEDYNKI.csv','UDP4AC500.2016.03.15 13.02.08_JEDYNKI_LABELS.csv')
 #X_train, X_test, y_train, y_test = train_test_split(x_data, labels, test_size=0.9,random_state=101)
