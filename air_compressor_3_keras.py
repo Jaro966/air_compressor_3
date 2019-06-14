@@ -38,15 +38,22 @@ def arrs_filenames(directory, csv_feature,csv_label):
 # i zwraca dane przygotowane dla biblioteki tensorflow
 # x_data, labels,feat_cols
 def feat_and_labe(file_features, file_labels):
-    compressor = pd.read_csv(file_features, header=None)
-    compressor_labels = pd.read_csv(file_labels, header=None)
 
+    # Features
+    compressor = pd.read_csv(file_features[0], header=None)
+    cols_to_norm = compressor.iloc[:, [19, 21, 24, 25, 33, 38]]  # 19,20,21,22,24,25,33,38
+    # Labels
+    compressor_labels = pd.read_csv(file_labels[0], header=None)
+    i = 1
+    while i < len(csv_feature) :  # UWAGA: zmienić na : while i < len(csv_feature)
 
-    #Wybór danych istotnych dla pracy urządzenia (kolumn)
-    cols_to_norm = compressor.iloc[:,[19,21,24,25,33,38]] #19,20,21,22,24,25,33,38
-    #UWAGa: w kolumnach 20 i 22 mogą być wszędzie 0
-    print(cols_to_norm)
-    print(compressor_labels)
+        compressor = pd.read_csv(file_features[i], header=None)
+        cols_to_norm_1 = compressor.iloc[:, [19, 21, 24, 25, 33, 38]]
+        cols_to_norm = cols_to_norm.append(cols_to_norm_1)
+
+        compressor_labels_1 = pd.read_csv(file_labels[i], header=None)
+        compressor_labels = compressor_labels.append(compressor_labels_1)
+        i = i + 1
 
     #funkcja normalizująca dane (ustawiająca wartości w zakresie 0-1)
     cols_to_norm = cols_to_norm.apply(lambda x: x if x.max()==x.min() else ((x-x.min()) / (x.max()-x.min())))
@@ -111,6 +118,8 @@ csv_feature, csv_label = arrs_filenames(directory,csv_feature,csv_label)#funkcja
 
 
 
+
+
 dnn_keras_model = models.Sequential()
 dnn_keras_model.add(layers.Dense(units=15,input_dim=6,activation='relu'))
 dnn_keras_model.add(layers.Dense(units=15,activation='relu'))
@@ -121,13 +130,12 @@ dnn_keras_model.compile(optimizer='adam',loss='sparse_categorical_crossentropy',
 
 #x_data,labels,feat_cols=feat_and_labe(file_features,file_labels)# funkcja generująca tablice danych (definicja powyżej)
 
-x_data,labels,feat_cols=feat_and_labe('F:\\2_Praca_dyplomowa\\1_Zrodla_polaczone\\UDP4AC500.2016.03.11 11.34.28.csv',
-                                         'F:\\2_Praca_dyplomowa\\1_Zrodla_polaczone\\UDP4AC500.2016.03.11 11.34.28_LABELS.csv')# funkcja generująca tablice danych (definicja powyżej)
+x_data,labels,feat_cols=feat_and_labe(csv_feature,csv_label)# funkcja generująca tablice danych (definicja powyżej)
 X_train, X_test, y_train, y_test = train_test_split(x_data, labels, test_size=0.4,random_state=101) # zbiory trenujące
     # i testujące
 
 
-dnn_keras_model.fit(X_train,y_train,epochs=1)
+dnn_keras_model.fit(X_train,y_train,epochs=3)
 
 #x_data,labels,feat_cols=feat_and_labe('UDP4AC500.2016.03.15 13.02.08_JEDYNKI.csv','UDP4AC500.2016.03.15 13.02.08_JEDYNKI_LABELS.csv')
 #X_train, X_test, y_train, y_test = train_test_split(x_data, labels, test_size=0.9,random_state=101)
