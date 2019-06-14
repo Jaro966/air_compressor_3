@@ -1,4 +1,4 @@
 a_r_1:
-	Aktualny branch
+	Działa
 a_r_3:
-    Roboczy
+    Działa
