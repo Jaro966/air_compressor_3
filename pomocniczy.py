@@ -8,10 +8,10 @@ from tensorflow.contrib.keras import losses,optimizers,metrics,activations
 from sklearn.metrics import classification_report
 import os
 #GPU
-from tensorflow.python.client import device_lib
-print(device_lib.list_local_devices())
-from keras import backend as K
-K.tensorflow_backend._get_available_gpus()
+#from tensorflow.python.client import device_lib
+#print(device_lib.list_local_devices())
+#from keras import backend as K
+#K.tensorflow_backend._get_available_gpus()
 
 
 directory='F:\\2_Praca_dyplomowa\\1_Zrodla_polaczone'#nazwa katalogu z plikami danych
