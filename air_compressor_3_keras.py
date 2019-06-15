@@ -130,7 +130,7 @@ dnn_keras_model.compile(optimizer='adam',loss='sparse_categorical_crossentropy',
 
 
 x_data,labels,feat_cols=feat_and_labe(csv_feature,csv_label)# funkcja generująca tablice danych (definicja powyżej)
-X_train, X_test, y_train, y_test = train_test_split(x_data, labels, test_size=0.3,random_state=101) # zbiory trenujące
+X_train, X_test, y_train, y_test = train_test_split(x_data, labels, test_size=0.4,random_state=101) # zbiory trenujące
     # i testujące
 
 #Model, do ustawienia wartość epochs
