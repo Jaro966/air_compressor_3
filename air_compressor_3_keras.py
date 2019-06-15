@@ -7,20 +7,13 @@ from tensorflow.contrib.keras import layers
 from tensorflow.contrib.keras import losses,optimizers,metrics,activations
 from sklearn.metrics import classification_report
 import os
-from keras import backend as K # do GPU
+
 
 
 
 
 directory='F:\\2_Praca_dyplomowa\\1_Zrodla_polaczone'#nazwa katalogu z plikami danych
-file_features='UDP4AC500.2017.08.21 14.24.26.csv'
-file_labels='UDP4AC500.2017.08.21 14.24.26_LABELS.csv'
 
-#Ustawia GPU do obliczeń                                                                        # i plików z etykietami (labels) do 2-óch  tablic
-config = tf.ConfigProto( device_count = {'GPU': 1 , 'CPU': 56} )
-sess = tf.Session(config=config)
-tf.keras.backend.set_session(sess)
-K.tensorflow_backend._get_available_gpus()
 
 
 #funkcja wczytuje do 2-óch tablic
@@ -55,7 +48,7 @@ def feat_and_labe(file_features, file_labels):
     compressor_labels = pd.read_csv(file_labels[0], header=None)
     i = 1
     while i < len(csv_feature):  # UWAGA: zmienić na : while i < len(csv_feature)
-    #while i < 30:  # UWAGA: zmienić na : while i < len(csv_feature)
+    #while i < 5:  # UWAGA: zmienić na : while i < len(csv_feature)
         compressor = pd.read_csv(file_features[i], header=None)
         cols_to_norm_1 = compressor.iloc[:, [19,20,21,22,24,25,33,38]]
         cols_to_norm = cols_to_norm.append(cols_to_norm_1)
@@ -83,14 +76,14 @@ def feat_and_labe(file_features, file_labels):
     print(x_data)
     print(compr_labels)
     ##Nr kolumny - nazwa zmiennnej - skrót/uwagi
-    #19	ActSpeedCompressorTop -         ActSpCoTop
-    #20	ActSpeedCompressorBottom -      nie używane (same zera)
-    #21	ActTorqueCompressorTop -        ActTorCompTop
-    #22	ActTorqueCompressorBottom -     nie używane (same zera)
-    #24	RefSpeedCompressorTop -         RefSpCompTop
-    #25	RefSpeedCompressorBottom -      RefSpComBot
-    #33	ActVoltageDCLinkCompressorBottom - ActVoltDcBot
-    #38	ActVoltageDCLinkCompressorTop -    ActVolDcTop
+    #19	ActSpeedCompressorTop -         A
+    #20	ActSpeedCompressorBottom -      B
+    #21	ActTorqueCompressorTop -        C
+    #22	ActTorqueCompressorBottom -     D
+    #24	RefSpeedCompressorTop -         E
+    #25	RefSpeedCompressorBottom -      F
+    #33	ActVoltageDCLinkCompressorBottom - G
+    #38	ActVoltageDCLinkCompressorTop -    H
 
     A = tf.feature_column.numeric_column('A')
     B = tf.feature_column.numeric_column('B')
@@ -137,11 +130,11 @@ dnn_keras_model.compile(optimizer='adam',loss='sparse_categorical_crossentropy',
 
 
 x_data,labels,feat_cols=feat_and_labe(csv_feature,csv_label)# funkcja generująca tablice danych (definicja powyżej)
-X_train, X_test, y_train, y_test = train_test_split(x_data, labels, test_size=0.4,random_state=101) # zbiory trenujące
+X_train, X_test, y_train, y_test = train_test_split(x_data, labels, test_size=0.3,random_state=101) # zbiory trenujące
     # i testujące
 
 #Model, do ustawienia wartość epochs
-dnn_keras_model.fit(X_train,y_train,epochs=5)
+dnn_keras_model.fit(X_train,y_train,epochs=3)
 
 
 predictions = dnn_keras_model.predict_classes(X_test)
