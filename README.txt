@@ -1,6 +1,6 @@
 master:
-    Działa i liczy z fajną dokładnością na całym zbiorze
+    Finalny
 a_r_1:
-	Działa
+	Roboczy
 a_r_3:
-    Działa
+    Archiwalny 
