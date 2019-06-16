@@ -7,6 +7,8 @@ from tensorflow.contrib.keras import layers
 from tensorflow.contrib.keras import losses,optimizers,metrics,activations
 from sklearn.metrics import classification_report
 import os
+from keras.models import load_model # biblioteka do zapisywania modelu
+import h5py
 
 
 
@@ -136,7 +138,11 @@ X_train, X_test, y_train, y_test = train_test_split(x_data, labels, test_size=0.
 #Model, do ustawienia wartość epochs
 dnn_keras_model.fit(X_train,y_train,epochs=3)
 
+#Zapisywanie modelu
+dnn_keras_model.save('air_compressor_model.h5')  # tworzy plik
+                                                    # HDF5 file 'air_compressor_model.h5' przechowujący model
 
+#Testowanie modelu
 predictions = dnn_keras_model.predict_classes(X_test)
 print(classification_report(predictions,y_test))
 dnn_keras_model.summary()
