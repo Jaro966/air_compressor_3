@@ -6,6 +6,6 @@ air_compressor_model.h5:
 master:
     Finalny
 a_r_1:
-	Roboczy
+	Zmieniony
 a_r_3:
-    Archiwalny
+    Roboczy
