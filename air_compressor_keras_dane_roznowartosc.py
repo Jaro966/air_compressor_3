@@ -1,3 +1,8 @@
+##Program eliminuje w danych próbki powtarzające się
+##Liczba próbek została obniżona o ponad połowę
+##Nie widać praktycznie różnicy w dokładności
+
+
 import pandas as pd
 import tensorflow as tf
 import matplotlib.pyplot as plt
@@ -154,7 +159,7 @@ X_train, X_test, y_train, y_test = train_test_split(x_data, labels, test_size=0.
     # i testujące
 
 #Model, do ustawienia wartość epochs
-dnn_keras_model.fit(X_train,y_train,epochs=5)
+dnn_keras_model.fit(X_train,y_train,epochs=2)
 
 #Zapisywanie modelu
 dnn_keras_model.save('air_compressor_model.h5')  # tworzy plik
