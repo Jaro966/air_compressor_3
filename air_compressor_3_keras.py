@@ -20,7 +20,7 @@ directory='F:\\2_Praca_dyplomowa\\1_Zrodla_polaczone'#nazwa katalogu z plikami d
 
 #funkcja wczytuje do 2-óch tablic
 #nazwy pliku z danymi i nazwy pliku z odpowiednimi klasami labels
-#zwraca tablice
+#zwraca tablice z nazwami plików
 
 def arrs_filenames(directory, csv_feature,csv_label):
     arr = os.listdir(directory)
@@ -50,7 +50,7 @@ def feat_and_labe(file_features, file_labels):
     compressor_labels = pd.read_csv(file_labels[0], header=None)
     i = 1
     while i < len(csv_feature):  # UWAGA: zmienić na : while i < len(csv_feature)
-    #while i < 5:  # UWAGA: zmienić na : while i < len(csv_feature)
+    #while i < 2:  # UWAGA: zmienić na : while i < len(csv_feature)
         compressor = pd.read_csv(file_features[i], header=None)
         cols_to_norm_1 = compressor.iloc[:, [19,20,21,22,24,25,33,38]]
         cols_to_norm = cols_to_norm.append(cols_to_norm_1)
@@ -73,10 +73,28 @@ def feat_and_labe(file_features, file_labels):
     compr_labels = compr_labels.replace(0.0, 0) # zmiana 0.0 na 0
     compr_labels = compr_labels.replace(1.0, 1) # zmiana 1.0 na 1
     compr_labels = compr_labels.replace(0.5, 2) # zmiana 0.5 na 2
+
+    ####Łączenie kolumn i wyrzucanie replikantów
+    #df_all_cols = pd.concat([x_data, compr_labels], axis=1, ignore_index=True)#łączy w jedną tablicę
+    df_all_cols = pd.concat([x_data, compr_labels], axis=1)  # łączy w jedną tablicę
+    print("df_all_cols")
+    print(df_all_cols)
+    df_all_cols = df_all_cols.drop_duplicates(subset=["A", "B", "C", "D", "E","F","G","H"], keep='first')
+    print("df_all_cols - z wyrzuconymi wierszami")
+    print(df_all_cols)
+    compr_labels_2=df_all_cols.drop(["A", "B", "C", "D", "E","F","G","H"], axis=1)
+    x_data_2 = df_all_cols.drop(['label'], axis=1)
+
+    print ("compr_labels_2")
+    print (compr_labels_2)
+    print ("x_data_2")
+    print (x_data_2)
+
+
     #zmiana float64 na int 32
-    compr_labels = compr_labels.astype('int32')
-    print(x_data)
-    print(compr_labels)
+    compr_labels_2 = compr_labels_2.astype('int32')
+    print(x_data_2)
+    print(compr_labels_2)
     ##Nr kolumny - nazwa zmiennnej - skrót/uwagi
     #19	ActSpeedCompressorTop -         A
     #20	ActSpeedCompressorBottom -      B
@@ -104,9 +122,9 @@ def feat_and_labe(file_features, file_labels):
     #plt.show()
 
     feat_cols = [A,B,C,D,E,F,G,H] #A,B,C,D,E,F,G,H
-    labels = compr_labels['label']
+    labels = compr_labels_2['label']
     labels
-    return x_data,labels, feat_cols
+    return x_data_2,labels, feat_cols
 
 #wczytywane są nazwy plików z danymi (features) i etykietami (labels)
 #do 2-óch tablic: csv_feature, csv_label

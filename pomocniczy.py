@@ -47,7 +47,7 @@ def feat_and_labe(file_features, file_labels):
     #Labels
     compressor_labels = pd.read_csv(file_labels[0], header=None)
     i=1
-    while i<30: #UWAGA: zmienić na : while i<len(csv_feature)
+    while i<2: #UWAGA: zmienić na : while i<len(csv_feature)
 
         compressor = pd.read_csv(file_features[i], header=None)
         cols_to_norm_1 = compressor.iloc[:, [19,20,21,22,24,25,33,38]] #[19,21,24,25,33,38]  rozszerzone: 19,20,21,22,24,25,33,38
@@ -56,13 +56,24 @@ def feat_and_labe(file_features, file_labels):
         compressor_labels_1=pd.read_csv(file_labels[i], header=None)
         compressor_labels = compressor_labels.append(compressor_labels_1)
         i=i+1
+    #####Łączenie kolumn i wyrzucanie replikantów
+    df_all_cols = pd.concat([cols_to_norm, compressor_labels], axis=1, ignore_index=True)
+    print ("df_all_cols")
+    print(df_all_cols)
     return cols_to_norm, compressor_labels
 
 csv_feature, csv_label = arrs_filenames(directory,csv_feature,csv_label)
 
 
 x_data, labels=feat_and_labe(csv_feature,csv_label)
-print('x_data')
+print('X_DATA')
+print(x_data)
+duplicated = x_data.duplicated(subset=None, keep='first')
+print('DUPLICATED')
+print(duplicated)
+print('Drop_Duplicates')
+x_data = x_data.drop_duplicates()
+print(x_data)
 
 n=0
 #pd.set_option('display.max_rows', len(x_data))
