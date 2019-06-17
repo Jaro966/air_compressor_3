@@ -159,7 +159,7 @@ X_train, X_test, y_train, y_test = train_test_split(x_data, labels, test_size=0.
     # i testujące
 
 #Model, do ustawienia wartość epochs
-dnn_keras_model.fit(X_train,y_train,epochs=2)
+dnn_keras_model.fit(X_train,y_train,epochs=3)
 
 #Zapisywanie modelu
 dnn_keras_model.save('air_compressor_model.h5')  # tworzy plik
