@@ -11,9 +11,6 @@ air_compressor_model.h5:
 master:
     Finalny
 a_r_1:
-	Roboczy
+	Kopia bezpieczeństwa mastera
 a_r_2:
-    Próbki różnowartościowe
-    ##Program eliminuje w danych próbki powtarzające się
-    ##Liczba próbek została obniżona o ponad połowę
-    ##Nie widać praktycznie różnicy w dokładności
+    Roboczy
