@@ -4,7 +4,7 @@ air_compressor_keras_dane_roznowartosc.py:
                     Próbki różnowartościowe
                     ##Program eliminuje w danych próbki powtarzające się
                     ##Liczba próbek została obniżona o ponad połowę
-                    ##Nie widać praktycznie różnicy w dokładności
+                    ##Nie widać praktycznie różnicy w dokładności w porównaniu do air_compressor_3_keras.py
 air_compressor_model.h5:
                     model sieci: 8 wejść, 3 wyjścia; [15,15,3]
 
