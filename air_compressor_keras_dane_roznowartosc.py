@@ -55,7 +55,7 @@ def feat_and_labe(file_features, file_labels):
     compressor_labels = pd.read_csv(file_labels[0], header=None)
     i = 1
     while i < len(csv_feature):  # UWAGA: zmienić na : while i < len(csv_feature)
-    #while i < 2:  # UWAGA: zmienić na : while i < len(csv_feature)
+    #while i < 50:  # UWAGA: zmienić na : while i < len(csv_feature)
         compressor = pd.read_csv(file_features[i], header=None)
         cols_to_norm_1 = compressor.iloc[:, [19,20,21,22,24,25,33,38]]
         cols_to_norm = cols_to_norm.append(cols_to_norm_1)
@@ -159,7 +159,7 @@ X_train, X_test, y_train, y_test = train_test_split(x_data, labels, test_size=0.
     # i testujące
 
 #Model, do ustawienia wartość epochs
-dnn_keras_model.fit(X_train,y_train,epochs=5)
+dnn_keras_model.fit(X_train,y_train,epochs=3)
 
 #Zapisywanie modelu
 dnn_keras_model.save('air_compressor_model_25_25_3_5e_40_60_2010.06.21.h5')  # tworzy plik

@@ -54,8 +54,8 @@ def feat_and_labe(file_features, file_labels):
     # Labels
     compressor_labels = pd.read_csv(file_labels[0], header=None)
     i = 1
-    while i < len(csv_feature):  # UWAGA: zmienić na : while i < len(csv_feature)
-    #while i < 2:  # UWAGA: zmienić na : while i < len(csv_feature)
+    #while i < len(csv_feature):  # UWAGA: zmienić na : while i < len(csv_feature)
+    while i < 45:  # UWAGA: zmienić na : while i < len(csv_feature)
         compressor = pd.read_csv(file_features[i], header=None)
         cols_to_norm_1 = compressor.iloc[:, [19,20,21,22,24,25,33,38]]
         cols_to_norm = cols_to_norm.append(cols_to_norm_1)
@@ -65,7 +65,9 @@ def feat_and_labe(file_features, file_labels):
         i = i + 1
 
     #funkcja normalizująca dane (ustawiająca wartości w zakresie 0-1)
-    cols_to_norm = cols_to_norm.apply(lambda x: (x - x.min()) / (x.max() - x.min()))
+    #cols_to_norm = cols_to_norm.apply(lambda x: (x - x.min()) / (x.max() - x.min()))
+
+    cols_to_norm = cols_to_norm.apply(lambda x:x if x.min()==x.max() else (x - x.min()) / (x.max() - x.min()))
 
 
 
@@ -145,12 +147,12 @@ csv_feature, csv_label = arrs_filenames(directory,csv_feature,csv_label)#funkcja
 
 
 
-dnn_keras_model = models.Sequential()
-dnn_keras_model.add(layers.Dense(units=25,input_dim=8,activation='relu'))
-dnn_keras_model.add(layers.Dense(units=25,activation='relu'))
+#dnn_keras_model = models.Sequential()
+#dnn_keras_model.add(layers.Dense(units=25,input_dim=8,activation='relu'))
+#dnn_keras_model.add(layers.Dense(units=25,activation='relu'))
 #dnn_keras_model.add(layers.Dense(units=15,activation='relu'))#dodatkowa warstwa
-dnn_keras_model.add(layers.Dense(units=3,activation='softmax'))
-dnn_keras_model.compile(optimizer='adam',loss='sparse_categorical_crossentropy', metrics=['accuracy'])
+#dnn_keras_model.add(layers.Dense(units=3,activation='softmax'))
+#dnn_keras_model.compile(optimizer='adam',loss='sparse_categorical_crossentropy', metrics=['accuracy'])
 
 
 
@@ -159,14 +161,35 @@ X_train, X_test, y_train, y_test = train_test_split(x_data, labels, test_size=0.
     # i testujące
 
 #Model, do ustawienia wartość epochs
-dnn_keras_model.fit(X_train,y_train,epochs=5)
+#dnn_keras_model.fit(X_train,y_train,epochs=5)
 
 #Zapisywanie modelu
-dnn_keras_model.save('air_compressor_model_25_25_3_5e_40_60_2010.06.21.h5')  # tworzy plik
+#dnn_keras_model.save('air_compressor_model_25_25_3_5e_40_60_2010.06.21.h5')  # tworzy plik
                                                     # HDF5 file 'air_compressor_model.h5' przechowujący model
 
 #Testowanie modelu
-predictions = dnn_keras_model.predict_classes(X_test)
-print(classification_report(predictions,y_test))
-dnn_keras_model.summary()
+#predictions = dnn_keras_model.predict_classes(X_test)
+#print(classification_report(predictions,y_test))
+#dnn_keras_model.summary()
+
+
+#SVM
+
+from sklearn.svm import SVC
+#LINEAR
+#svclassifier = SVC(kernel='linear')
+#svclassifier.fit(X_train, y_train)
+
+#POLYNOMIAL
+#svclassifier = SVC(kernel='poly', degree=8)
+#GAUSSIAN
+svclassifier = SVC(kernel='rbf')
+
+svclassifier.fit(X_train, y_train)
+
+y_pred = svclassifier.predict(X_test)
+
+from sklearn.metrics import classification_report, confusion_matrix
+print(confusion_matrix(y_test,y_pred))
+print(classification_report(y_test,y_pred))
 
