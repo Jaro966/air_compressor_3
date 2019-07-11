@@ -7,15 +7,34 @@ from tensorflow.contrib.keras import layers
 from tensorflow.contrib.keras import losses,optimizers,metrics,activations
 from sklearn.metrics import classification_report
 import os
-#GPU
-#from tensorflow.python.client import device_lib
-#print(device_lib.list_local_devices())
-#from keras import backend as K
-#K.tensorflow_backend._get_available_gpus()
+from keras.models import load_model # biblioteka do zapisywania modelu
+import h5py
 
-from keras import backend as K
-K.tensorflow_backend._get_available_gpus()
 
-sess = tf.Session(config=tf.ConfigProto(log_device_placement=True))
-# Runs the op.
-print(sess.run(c))
+
+
+
+directory='F:\\2_Praca_dyplomowa\\1_Zrodla_polaczone'#nazwa katalogu z plikami danych
+
+
+
+#arrs_filenames(directory, csv_feature,csv_label)
+#funkcja wczytuje do 2-óch tablic
+#nazwy pliku z danymi i nazwy pliku z odpowiednimi klasami labels
+#zwraca tablice z nazwami plików
+
+def arrs_filenames(directory, csv_feature,csv_label):
+    arr = os.listdir(directory)
+    arr = sorted(arr)
+    print("arr")
+    print(arr)
+    print(len(arr))
+    for i in range(0, len(arr), 2):
+        print(i)
+        n=int(i/2)
+        print(n)
+        csv_feature[n] = directory + '\\'+ arr[i]
+        csv_label[n] = directory + '\\' + arr[i + 1]
+        print(csv_feature[n])
+        print(csv_label[n])
+    return csv_feature,csv_label

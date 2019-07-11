@@ -23,20 +23,27 @@ directory='F:\\2_Praca_dyplomowa\\1_Zrodla_polaczone'#nazwa katalogu z plikami d
 
 
 
+#arrs_filenames(directory, csv_feature,csv_label)
 #funkcja wczytuje do 2-óch tablic
-#nazwy pliku z danymi i nazwy pliku z odpowiednimi klasami labels
-#zwraca tablice z nazwami plików
+#nazwy pliku z danymi typu features i nazwy pliku z odpowiednimi klasami labels
+#zwraca tablice z nazwami plików i ścieżkami
+#directory - nazwa katalogu z plikami danych
+#csv_feature - pusta tablica o rozmiarze ilości plików features
+#csv_label - pusta tablica o rozmiarze ilości plików labels
 
 def arrs_filenames(directory, csv_feature,csv_label):
-    arr = os.listdir(directory)
-    arr = sorted(arr)
-    print(len(arr))
-    for i in range(0, len(arr), 2):
+    arr = os.listdir(directory)#wczytuje do arr nazwy wszystkich plików
+    arr = sorted(arr)#sortuje alfabetycznie pliki w tablicy arr
+    print(len(arr))#drukuje długość tablicy
+    for i in range(0, len(arr), 2): #pętla o długości pliku z danymi, krok: 2
         print(i)
         n=int(i/2)
         print(n)
-        csv_feature[n] = directory + '\\'+ arr[i]
-        csv_label[n] = directory + '\\' + arr[i + 1]
+        # nazwy plików zawierających dane typu features i labels ustawione są w tablicy arr naprzemiennie tj.
+        #arr[i] = plik features
+        #arr[i+1] = plik labels
+        csv_feature[n] = directory + '\\'+ arr[i]   #wpisuje ścieżkę pliku features
+        csv_label[n] = directory + '\\' + arr[i + 1]#wpisuje ścieżkę pliku labels
         print(csv_feature[n])
         print(csv_label[n])
     return csv_feature,csv_label
@@ -124,7 +131,7 @@ def feat_and_labe(file_features, file_labels):
 
     #Wykres
     #compr_labels['label'].hist(bins=20)
-    #plt.show()
+    plt.show()
 
     feat_cols = [A,B,C,D,E,F,G,H] #A,B,C,D,E,F,G,H
     labels = compr_labels_2['label']
@@ -138,8 +145,8 @@ def feat_and_labe(file_features, file_labels):
 
 arr = os.listdir(directory)#wczytuje do tablicy nazwy wszystkich plików z danymi
 arr = sorted(arr) #sortuje alfabetycznie nazwy plików
-csv_feature = [None] * int(len(arr)/2) #tworzy tablicę z nazwami plików zawierających dane (feature)
-csv_label = [None] * int(len(arr)/2) #tworzy tablicę z nazwami plików zawierających klasy (labels)
+csv_feature = [None] * int(len(arr)/2)  #tworzy pustą tablicę (wektor) o długości równej ilości plików features
+csv_label = [None] * int(len(arr)/2) #tworzy pustą tablicę (wektor) o długości równej ilości plików labels
 csv_feature, csv_label = arrs_filenames(directory,csv_feature,csv_label)#funkcja wczytująca nazwy plików danych (features)
 
 
