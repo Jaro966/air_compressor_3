@@ -56,15 +56,18 @@ def arrs_filenames(directory, csv_feature,csv_label):
 def feat_and_labe(file_features, file_labels):
 
     # Features
-    compressor = pd.read_csv(file_features[0], header=None)
+    compressor = pd.read_csv(file_features[0], header=None)#wczytuje do tablicy compressor dane typu features
     cols_to_norm = compressor.iloc[:, [19,20,21,22,24,25,33,38]]  # 19,20,21,22,24,25,33,38
     # Labels
-    compressor_labels = pd.read_csv(file_labels[0], header=None)
+    compressor_labels = pd.read_csv(file_labels[0], header=None)    #wczytuje do tablicy compressor dane typu labels
     i = 1
-    while i < len(csv_feature):  # UWAGA: zmienić na : while i < len(csv_feature)
-    #while i < 50:  # UWAGA: zmienić na : while i < len(csv_feature)
-        compressor = pd.read_csv(file_features[i], header=None)
-        cols_to_norm_1 = compressor.iloc[:, [19,20,21,22,24,25,33,38]]
+    while i < len(csv_feature):
+    #while i < 50:  # pozwala ustawić inną liczbę plików do analizy
+        compressor = pd.read_csv(file_features[i], header=None) #wczytuje do tablicy compressor
+                                                                #wszystkie pliki z danymi typu features
+                                                                #nazwy plików w tablicy file_features[i]
+        cols_to_norm_1 = compressor.iloc[:, [19,20,21,22,24,25,33,38]]  #z tablicy usuwane są wszystkie kolumny
+                                                                        #oprócz 19,20,...,38
         cols_to_norm = cols_to_norm.append(cols_to_norm_1)
 
         compressor_labels_1 = pd.read_csv(file_labels[i], header=None)
