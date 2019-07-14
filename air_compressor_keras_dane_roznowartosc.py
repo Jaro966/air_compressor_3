@@ -32,9 +32,9 @@ directory='F:\\2_Praca_dyplomowa\\1_Zrodla_polaczone'#nazwa katalogu z plikami d
 #csv_label - pusta tablica o rozmiarze ilości plików labels
 
 def arrs_filenames(directory, csv_feature,csv_label):
-    arr = os.listdir(directory)#wczytuje do arr nazwy wszystkich plików
-    arr = sorted(arr)#sortuje alfabetycznie pliki w tablicy arr
-    print(len(arr))#drukuje długość tablicy
+    arr = os.listdir(directory)#wczytywane są do tablicy arr nazwy wszystkich plików
+    arr = sorted(arr)#sortowane są alfabetycznie pliki w tablicy arr
+    print(len(arr))#drukowana jest długość tablicy
     for i in range(0, len(arr), 2): #pętla o długości pliku z danymi, krok: 2
         print(i)
         n=int(i/2)
@@ -42,8 +42,8 @@ def arrs_filenames(directory, csv_feature,csv_label):
         # nazwy plików zawierających dane typu features i labels ustawione są w tablicy arr naprzemiennie tj.
         #arr[i] = plik features
         #arr[i+1] = plik labels
-        csv_feature[n] = directory + '\\'+ arr[i]   #wpisuje ścieżkę pliku features
-        csv_label[n] = directory + '\\' + arr[i + 1]#wpisuje ścieżkę pliku labels
+        csv_feature[n] = directory + '\\'+ arr[i]   #wypisywana jest ścieżka pliku features
+        csv_label[n] = directory + '\\' + arr[i + 1]#wypisywana jest ścieżka pliku labels
         print(csv_feature[n])
         print(csv_label[n])
     return csv_feature,csv_label
@@ -56,48 +56,60 @@ def arrs_filenames(directory, csv_feature,csv_label):
 def feat_and_labe(file_features, file_labels):
 
     # Features
-    compressor = pd.read_csv(file_features[0], header=None)#wczytuje do tablicy compressor dane typu features
+    compressor = pd.read_csv(file_features[0], header=None)#wczytywane są do tablicy compressor dane typu features
     cols_to_norm = compressor.iloc[:, [19,20,21,22,24,25,33,38]]  # 19,20,21,22,24,25,33,38
     # Labels
-    compressor_labels = pd.read_csv(file_labels[0], header=None)    #wczytuje do tablicy compressor dane typu labels
-    i = 1
+    compressor_labels = pd.read_csv(file_labels[0], header=None)    #wczytywane są do tablicy compressor
+                                                                    # dane typu labels
+    i = 1   #ustawiany jest licznik dla pętli while
     while i < len(csv_feature):
     #while i < 50:  # pozwala ustawić inną liczbę plików do analizy
-        compressor = pd.read_csv(file_features[i], header=None) #wczytuje do tablicy compressor
+        compressor = pd.read_csv(file_features[i], header=None) #wczytywane są do tablicy compressor
                                                                 #wszystkie pliki z danymi typu features
                                                                 #nazwy plików w tablicy file_features[i]
         cols_to_norm_1 = compressor.iloc[:, [19,20,21,22,24,25,33,38]]  #z tablicy usuwane są wszystkie kolumny
                                                                         #oprócz 19,20,...,38
-        cols_to_norm = cols_to_norm.append(cols_to_norm_1)
-
-        compressor_labels_1 = pd.read_csv(file_labels[i], header=None)
-        compressor_labels = compressor_labels.append(compressor_labels_1)
-        i = i + 1
+        cols_to_norm = cols_to_norm.append(cols_to_norm_1)  #do tablicy cols_to_norm dodawane są dane
+                                                            #z tablicy cols_to_norm_1
+        compressor_labels_1 = pd.read_csv(file_labels[i], header=None)  #do tablicy compressor_labels_1 wczytywane
+                                                                        #są dane typu labels
+                                                                        # z plików typu csv
+        compressor_labels = compressor_labels.append(compressor_labels_1)   #do tablicy compressor_labels dodawane są
+                                                                            #dane z tablicy compressor_labels
+        i = i + 1   #zwększany jest licznik
 
     #funkcja normalizująca dane (ustawiająca wartości w zakresie 0-1)
     cols_to_norm = cols_to_norm.apply(lambda x: (x - x.min()) / (x.max() - x.min()))
 
 
 
-    print(cols_to_norm)
-    x_data=pd.DataFrame(cols_to_norm.values, columns = ["A", "B", "C", "D", "E","F","G","H"])
-    compr_labels = pd.DataFrame(compressor_labels.values, columns = ["label", "None"])
-    compr_labels = compr_labels.drop(['None'], axis=1)
+    print(cols_to_norm) #drukowane są znormalizowane dane
+    x_data=pd.DataFrame(cols_to_norm.values, columns = ["A", "B", "C", "D", "E","F","G","H"])   #tworzona jes tablica
+        #x_data i nadawane są nazwy poszczególnym kolumnom (A,B,...,H). Tablica zawiera znormalizowane dane
+        #typu features
+    compr_labels = pd.DataFrame(compressor_labels.values, columns = ["label", "None"])  #tworzona jest tablica
+        #compr_labels i nadawane są nazwy poszczególnym kolumnom (label, None). Tablica zawiera dane typu labels
+    compr_labels = compr_labels.drop(['None'], axis=1)  #usuwana jest kolumna None,
+        # ponieważ nie zawiera przydatnych danych
     #Zmiana wartości w kolumnie labels
     #0.0 na 0, 1.0 na 1, 0.5 na 2
+    #Wartości należy zmienić na int ponieważ są klasami (kategoriami)
     compr_labels = compr_labels.replace(0.0, 0) # zmiana 0.0 na 0
     compr_labels = compr_labels.replace(1.0, 1) # zmiana 1.0 na 1
     compr_labels = compr_labels.replace(0.5, 2) # zmiana 0.5 na 2
 
-    ####Łączenie kolumn i wyrzucanie replikantów
-    #df_all_cols = pd.concat([x_data, compr_labels], axis=1, ignore_index=True)#łączy w jedną tablicę
-    df_all_cols = pd.concat([x_data, compr_labels], axis=1)  # łączy w jedną tablicę
+    ####Łączenie kolumn i wyrzucanie się wierszy
+    df_all_cols = pd.concat([x_data, compr_labels], axis=1)  # dane z tablic x_data i compr_labels
+        # łączone są w jedną tablicę df_all_colls
     print("df_all_cols")
-    print(df_all_cols)
-    df_all_cols = df_all_cols.drop_duplicates(subset=["A", "B", "C", "D", "E","F","G","H"], keep='first')
+    print(df_all_cols)  #drukowana jest tablica df_all_cols
+    df_all_cols = df_all_cols.drop_duplicates(subset=["A", "B", "C", "D", "E","F","G","H"], keep='first')#z tablicy
+        #df_all_cols usuwane są wszystkie powtarzające się wiersze
     print("df_all_cols - z wyrzuconymi wierszami")
-    print(df_all_cols)
-    compr_labels_2=df_all_cols.drop(["A", "B", "C", "D", "E","F","G","H"], axis=1)
+    print(df_all_cols)  #ponownie drukowana jest tablica df_all_cols
+        #pozwala to sprawdzić ile jest różnowartościowych próbek w zbiorze danych
+    compr_labels_2=df_all_cols.drop(["A", "B", "C", "D", "E","F","G","H"], axis=1)  #tworzona jest tablica
+        #compr_labels_2 zawierająca tylko dane typu labels
     x_data_2 = df_all_cols.drop(['label'], axis=1)
 
     print ("compr_labels_2")
