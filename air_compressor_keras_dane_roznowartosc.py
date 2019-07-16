@@ -110,8 +110,7 @@ def feat_and_labe(file_features, file_labels):
         #pozwala to sprawdzić ile jest różnowartościowych próbek w zbiorze danych
     compr_labels_2=df_all_cols.drop(["A", "B", "C", "D", "E","F","G","H"], axis=1)  #tworzona jest tablica
         #compr_labels_2 zawierająca tylko dane typu labels
-    x_data_2 = df_all_cols.drop(['label'], axis=1)
-
+    x_data_2 = df_all_cols.drop(['label'], axis=1)  #tworzona jest tablica x_data_2 zawierająca tylko dane labels
     print ("compr_labels_2")
     print (compr_labels_2)
     print ("x_data_2")
@@ -158,20 +157,21 @@ def feat_and_labe(file_features, file_labels):
 #dane: csv_feature[n],  etykiety: csv_label[n]
 
 
-arr = os.listdir(directory)#wczytuje do tablicy nazwy wszystkich plików z danymi
-arr = sorted(arr) #sortuje alfabetycznie nazwy plików
-csv_feature = [None] * int(len(arr)/2)  #tworzy pustą tablicę (wektor) o długości równej ilości plików features
-csv_label = [None] * int(len(arr)/2) #tworzy pustą tablicę (wektor) o długości równej ilości plików labels
-csv_feature, csv_label = arrs_filenames(directory,csv_feature,csv_label)#funkcja wczytująca nazwy plików danych (features)
+arr = os.listdir(directory)#do tablicy arr wczytywane są nazwy wszystkich plików z danymi
+arr = sorted(arr) #sortowane są alfabetycznie nazwy plików
+csv_feature = [None] * int(len(arr)/2)  #tworzona jest pusta tablica (wektor)
+    # o długości równej ilości plików z danymi features
+csv_label = [None] * int(len(arr)/2) #tworzona jest pusta tablica (wektor)
+    # o długości równej ilości plików typu labels
+csv_feature, csv_label = arrs_filenames(directory,csv_feature,csv_label)    #funkcja wczytująca
+                                                                            # nazwy plików danych (features)
 
-
-
-
-dnn_keras_model = models.Sequential()
-dnn_keras_model.add(layers.Dense(units=25,input_dim=8,activation='relu'))
-dnn_keras_model.add(layers.Dense(units=25,activation='relu'))
-#dnn_keras_model.add(layers.Dense(units=15,activation='relu'))#dodatkowa warstwa
-dnn_keras_model.add(layers.Dense(units=3,activation='softmax'))
+dnn_keras_model = models.Sequential()#tworzony jest sekwencyjny model sieci neuronowej
+    #składający się z liniowego stosu warstw
+dnn_keras_model.add(layers.Dense(units=25,input_dim=8,activation='relu'))#tworzona jest warstwa wejściowa
+    #
+dnn_keras_model.add(layers.Dense(units=25,activation='relu'))#druga warstwa
+dnn_keras_model.add(layers.Dense(units=3,activation='softmax'))#trzecia warstwa - wyjściowa
 dnn_keras_model.compile(optimizer='adam',loss='sparse_categorical_crossentropy', metrics=['accuracy'])
 
 
