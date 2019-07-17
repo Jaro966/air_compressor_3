@@ -15,13 +15,7 @@ import os
 from keras.models import load_model # biblioteka do zapisywania modelu
 import h5py
 
-
-
-
-
 directory='F:\\2_Praca_dyplomowa\\1_Zrodla_polaczone'#nazwa katalogu z plikami danych
-
-
 
 #arrs_filenames(directory, csv_feature,csv_label)
 #funkcja wczytuje do 2-óch tablic
@@ -48,8 +42,6 @@ def arrs_filenames(directory, csv_feature,csv_label):
         print(csv_label[n])
     return csv_feature,csv_label
 
-
-
 #funkcja przekazuje pliki z danymi uczącymi
 # i zwraca dane przygotowane dla biblioteki tensorflow
 # x_data, labels,feat_cols
@@ -57,7 +49,11 @@ def feat_and_labe(file_features, file_labels):
 
     # Features
     compressor = pd.read_csv(file_features[0], header=None)#wczytywane są do tablicy compressor dane typu features
+    print('compressor')
+    print (compressor)
     cols_to_norm = compressor.iloc[:, [19,20,21,22,24,25,33,38]]  # 19,20,21,22,24,25,33,38
+    print ('cols_to_norm')
+    print (cols_to_norm)
     # Labels
     compressor_labels = pd.read_csv(file_labels[0], header=None)    #wczytywane są do tablicy compressor
                                                                     # dane typu labels
@@ -80,8 +76,6 @@ def feat_and_labe(file_features, file_labels):
 
     #funkcja normalizująca dane (ustawiająca wartości w zakresie 0-1)
     cols_to_norm = cols_to_norm.apply(lambda x: (x - x.min()) / (x.max() - x.min()))
-
-
 
     print(cols_to_norm) #drukowane są znormalizowane dane
     x_data=pd.DataFrame(cols_to_norm.values, columns = ["A", "B", "C", "D", "E","F","G","H"])   #tworzona jes tablica
@@ -116,10 +110,9 @@ def feat_and_labe(file_features, file_labels):
     print ("x_data_2")
     print (x_data_2)
 
-
     #zmiana float64 na int 32
     compr_labels_2 = compr_labels_2.astype('int32')
-    print(x_data_2)
+    #print(x_data_2)
     print(compr_labels_2)
     ##Nr kolumny - nazwa zmiennnej - skrót/uwagi
     #19	ActSpeedCompressorTop -         A
@@ -156,7 +149,6 @@ def feat_and_labe(file_features, file_labels):
 #do 2-óch tablic: csv_feature, csv_label
 #dane: csv_feature[n],  etykiety: csv_label[n]
 
-
 arr = os.listdir(directory)#do tablicy arr wczytywane są nazwy wszystkich plików z danymi
 arr = sorted(arr) #sortowane są alfabetycznie nazwy plików
 csv_feature = [None] * int(len(arr)/2)  #tworzona jest pusta tablica (wektor)
@@ -165,20 +157,18 @@ csv_label = [None] * int(len(arr)/2) #tworzona jest pusta tablica (wektor)
     # o długości równej ilości plików typu labels
 csv_feature, csv_label = arrs_filenames(directory,csv_feature,csv_label)    #funkcja wczytująca
                                                                             # nazwy plików danych (features)
-
+##BUDOWA MODELU
 dnn_keras_model = models.Sequential()#tworzony jest sekwencyjny model sieci neuronowej
     #składający się z liniowego stosu warstw
 dnn_keras_model.add(layers.Dense(units=25,input_dim=8,activation='relu'))#tworzona jest warstwa wejściowa
-    #
 dnn_keras_model.add(layers.Dense(units=25,activation='relu'))#druga warstwa
 dnn_keras_model.add(layers.Dense(units=3,activation='softmax'))#trzecia warstwa - wyjściowa
-dnn_keras_model.compile(optimizer='adam',loss='sparse_categorical_crossentropy', metrics=['accuracy'])
-
-
-
+##UCZENIE I TESTOWANIE MODELU
+dnn_keras_model.compile(optimizer='adam',loss='sparse_categorical_crossentropy', metrics=['accuracy'])  #konfiguracja
+                                                                                                #modelu do treningu
 x_data,labels,feat_cols=feat_and_labe(csv_feature,csv_label)# funkcja generująca tablice danych (definicja powyżej)
-X_train, X_test, y_train, y_test = train_test_split(x_data, labels, test_size=0.4,random_state=101) # zbiory trenujące
-    # i testujące
+X_train, X_test, y_train, y_test = train_test_split(x_data, labels, test_size=0.4,random_state=101) # podział danych
+#na zbiory uczące i testujące
 
 #Model, do ustawienia wartość epochs
 dnn_keras_model.fit(X_train,y_train,epochs=3)
