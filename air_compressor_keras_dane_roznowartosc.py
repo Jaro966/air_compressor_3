@@ -179,6 +179,6 @@ dnn_keras_model.save('air_compressor_model_25_25_3_5e_40_60_2010.06.21.h5')  # t
 
 #Testowanie modelu
 predictions = dnn_keras_model.predict_classes(X_test)
-print(classification_report(predictions,y_test))
+print(classification_report(predictions,y_test,digits=7))
 dnn_keras_model.summary()
 
