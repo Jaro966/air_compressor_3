@@ -3,7 +3,7 @@ master:
 a_r_1:
 	Kopia bezpieczeństwa mastera
 a_r_2:
-    Roboczy
+    Roboczy - program testuje w pętli model (1 epochs - do zmiany)
 
 
 air_compressor_3_keras.py:

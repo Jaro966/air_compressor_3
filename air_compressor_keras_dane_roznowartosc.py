@@ -14,6 +14,8 @@ from sklearn.metrics import classification_report
 import os
 from keras.models import load_model # biblioteka do zapisywania modelu
 import h5py
+import random2  #liczby losowe
+from random2 import randrange
 
 directory='F:\\2_Praca_dyplomowa\\1_Zrodla_polaczone'#nazwa katalogu z plikami danych
 
@@ -157,31 +159,35 @@ csv_label = [None] * int(len(arr)/2) #tworzona jest pusta tablica (wektor)
     # o długości równej ilości plików typu labels
 csv_feature, csv_label = arrs_filenames(directory,csv_feature,csv_label)    #funkcja wczytująca
                                                                             # nazwy plików danych (features)
-##BUDOWA MODELU
-dnn_keras_model = models.Sequential()#tworzony jest sekwencyjny model sieci neuronowej
-    #składający się z liniowego stosu warstw
-dnn_keras_model.add(layers.Dense(units=50,input_dim=8,activation='relu'))#tworzona jest warstwa wejściowa
-dnn_keras_model.add(layers.Dense(units=50,activation='relu'))#druga warstwa
-dnn_keras_model.add(layers.Dense(units=50,activation='relu'))#druga warstwa
-dnn_keras_model.add(layers.Dense(units=50,activation='relu'))#druga warstwa
-dnn_keras_model.add(layers.Dense(units=50,activation='relu'))#druga warstwa
-dnn_keras_model.add(layers.Dense(units=3,activation='softmax'))#trzecia warstwa - wyjściowa
-##UCZENIE I TESTOWANIE MODELU
-dnn_keras_model.compile(optimizer='adam',loss='sparse_categorical_crossentropy', metrics=['accuracy'])  #konfiguracja
-                                                                                                #modelu do treningu
 x_data,labels,feat_cols=feat_and_labe(csv_feature,csv_label)# funkcja generująca tablice danych (definicja powyżej)
 X_train, X_test, y_train, y_test = train_test_split(x_data, labels, test_size=0.4,random_state=101) # podział danych
 #na zbiory uczące i testujące
+##BUDOWA MODELU
+no_models=0
+while no_models<5:
+    hidden_layer1=random2.randint (10,51)
+    hidden_layer2=random2.randint (10,51)
+    dnn_keras_model = models.Sequential()#tworzony jest sekwencyjny model sieci neuronowej
+    #składający się z liniowego stosu warstw
+    dnn_keras_model.add(layers.Dense(units=hidden_layer1,input_dim=8,activation='relu'))#tworzona jest warstwa wejściowa
+    dnn_keras_model.add(layers.Dense(units=hidden_layer2,activation='relu'))#druga warstwa
+    dnn_keras_model.add(layers.Dense(units=3,activation='softmax'))#trzecia warstwa - wyjściowa
+    ##UCZENIE I TESTOWANIE MODELU
+    dnn_keras_model.compile(optimizer='adam',loss='sparse_categorical_crossentropy', metrics=['accuracy'])  #konfiguracja
+                                                                                                #modelu do treningu
 
-#Model, do ustawienia wartość epochs
-dnn_keras_model.fit(X_train,y_train,epochs=5)
 
-#Zapisywanie modelu
-dnn_keras_model.save('air_compressor_model_25_25_3_5e_40_60_2010.06.21.h5')  # tworzy plik
+    #Model, do ustawienia wartość epochs
+    dnn_keras_model.fit(X_train,y_train,epochs=1)
+
+    #Zapisywanie modelu
+    #dnn_keras_model.save('air_compressor_model_25_25_3_5e_40_60_2010.06.21.h5')  # tworzy plik
                                                     # HDF5 file 'air_compressor_model.h5' przechowujący model
 
-#Testowanie modelu
-predictions = dnn_keras_model.predict_classes(X_test)
-print(classification_report(predictions,y_test,digits=7))
-dnn_keras_model.summary()
+    #Testowanie modelu
+    predictions = dnn_keras_model.predict_classes(X_test)
+    print(classification_report(predictions,y_test,digits=7))   #wskaźniki do oceny sieci
+    dnn_keras_model.summary()#liczba warstw i neronów w warstwie
+    dnn_keras_model.reset_states()# do skasowania?
+    no_models=no_models+1
 
