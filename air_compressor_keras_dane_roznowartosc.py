@@ -16,6 +16,23 @@ from keras.models import load_model # biblioteka do zapisywania modelu
 import h5py
 import random2  #liczby losowe
 from random2 import randrange
+#----------------------------------
+def classification_report_csv(report):
+    report_data = []
+    lines = report.split('\n')
+    for line in lines[2:-3]:
+        row = {}
+        row_data = line.split('      ')
+        row['class'] = row_data[0]
+        row['precision'] = float(row_data[1])
+        row['recall'] = float(row_data[2])
+        row['f1_score'] = float(row_data[3])
+        row['support'] = float(row_data[4])
+        report_data.append(row)
+    dataframe = pd.DataFrame.from_dict(report_data)
+    dataframe.to_csv('classification_report.csv', index = False)
+    #---------------------------------------------
+
 
 directory='F:\\2_Praca_dyplomowa\\1_Zrodla_polaczone'#nazwa katalogu z plikami danych
 
@@ -164,7 +181,7 @@ X_train, X_test, y_train, y_test = train_test_split(x_data, labels, test_size=0.
 #na zbiory uczące i testujące
 ##BUDOWA MODELU
 no_models=0
-while no_models<5:
+while no_models<1:
     hidden_layer1=random2.randint (10,51)
     hidden_layer2=random2.randint (10,51)
     dnn_keras_model = models.Sequential()#tworzony jest sekwencyjny model sieci neuronowej
@@ -186,7 +203,10 @@ while no_models<5:
 
     #Testowanie modelu
     predictions = dnn_keras_model.predict_classes(X_test)
-    print(classification_report(predictions,y_test,digits=7))   #wskaźniki do oceny sieci
+    report=classification_report(predictions,y_test,digits=7)
+    #print(classification_report(predictions,y_test,digits=7))   #wskaźniki do oceny sieci
+    print (report)
+    classification_report_csv(report)   #---------------------------------
     dnn_keras_model.summary()#liczba warstw i neronów w warstwie
     dnn_keras_model.reset_states()# do skasowania?
     no_models=no_models+1
