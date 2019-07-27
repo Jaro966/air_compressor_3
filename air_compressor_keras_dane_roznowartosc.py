@@ -181,6 +181,9 @@ X_train, X_test, y_train, y_test = train_test_split(x_data, labels, test_size=0.
 #na zbiory uczące i testujące
 ##BUDOWA MODELU
 no_models=0
+accuracy=[]
+macro_avarage=[]
+
 while no_models<1:
     hidden_layer1=random2.randint (10,51)
     hidden_layer2=random2.randint (10,51)
@@ -217,6 +220,8 @@ while no_models<1:
     print (f1_score(y_test, predictions, average='macro'))
     print("f1_score")
     print (f1_score(y_test, predictions, average=None))
+    print("f1_score: 0")
+    print(f1_score(y_test, predictions, pos_label=0, 'binary' != average))
 
 
     # ---------------
