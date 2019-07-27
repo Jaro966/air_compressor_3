@@ -206,8 +206,21 @@ while no_models<1:
     report=classification_report(predictions,y_test,digits=7)
     #print(classification_report(predictions,y_test,digits=7))   #wskaźniki do oceny sieci
     print (report)
-    classification_report_csv(report)   #---------------------------------
-    dnn_keras_model.summary()#liczba warstw i neronów w warstwie
+    #---------------
+    from sklearn.metrics import accuracy_score
+    print("Accuracy score")
+    print (accuracy_score(y_test, predictions,normalize=True))   # pokazuje z dużą dokładnością accuracy (globalna
+                                                                    # dokładność
+    from sklearn.metrics import f1_score
+
+    print("macro avarage")
+    print (f1_score(y_test, predictions, average='macro'))
+    print("f1_score")
+    print (f1_score(y_test, predictions, average=None))
+
+
+    # ---------------
+    dnn_keras_model.summary()#liczba warstw i neuronów w warstwie
     dnn_keras_model.reset_states()# do skasowania?
     no_models=no_models+1
 

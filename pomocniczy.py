@@ -16,6 +16,20 @@ from random2 import randrange
 #hidden_layer1=random2.randrange (10,51,1)
 hidden_layer1=random2.randint (10,51)
 print(hidden_layer1)
+n=0
+row=[]
+while n<1:
+    models=pd.DataFrame(columns=['L1','L2','L3','accuracy', 'macro_average','f1_score_0', 'f1_score_1','f1_score_2' ])
+    models.append({'L1':n},ignore_index=True)
+    row=[1,2,3,4,5,6,7,8]
+    models.append(row)
+    print(row[0])
+    n=n+1
+
+print(models)
+
+
+
 
 
 
