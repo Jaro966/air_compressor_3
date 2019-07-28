@@ -160,11 +160,11 @@ csv_feature, csv_label = arrs_filenames(directory,csv_feature,csv_label)    #fun
 ##BUDOWA MODELU
 dnn_keras_model = models.Sequential()#tworzony jest sekwencyjny model sieci neuronowej
     #składający się z liniowego stosu warstw
-dnn_keras_model.add(layers.Dense(units=50,input_dim=8,activation='relu'))#tworzona jest warstwa wejściowa
-dnn_keras_model.add(layers.Dense(units=50,activation='relu'))#druga warstwa
-dnn_keras_model.add(layers.Dense(units=50,activation='relu'))#druga warstwa
-dnn_keras_model.add(layers.Dense(units=50,activation='relu'))#druga warstwa
-dnn_keras_model.add(layers.Dense(units=50,activation='relu'))#druga warstwa
+dnn_keras_model.add(layers.Dense(units=100,input_dim=8,activation='relu'))#tworzona jest warstwa wejściowa
+dnn_keras_model.add(layers.Dense(units=100,activation='relu'))#druga warstwa
+dnn_keras_model.add(layers.Dense(units=100,activation='relu'))#druga warstwa
+dnn_keras_model.add(layers.Dense(units=100,activation='relu'))#druga warstwa
+dnn_keras_model.add(layers.Dense(units=100,activation='relu'))#druga warstwa
 dnn_keras_model.add(layers.Dense(units=3,activation='softmax'))#trzecia warstwa - wyjściowa
 ##UCZENIE I TESTOWANIE MODELU
 dnn_keras_model.compile(optimizer='adam',loss='sparse_categorical_crossentropy', metrics=['accuracy'])  #konfiguracja
@@ -174,7 +174,7 @@ X_train, X_test, y_train, y_test = train_test_split(x_data, labels, test_size=0.
 #na zbiory uczące i testujące
 
 #Model, do ustawienia wartość epochs
-dnn_keras_model.fit(X_train,y_train,epochs=5)
+dnn_keras_model.fit(X_train,y_train,epochs=3)
 
 #Zapisywanie modelu
 dnn_keras_model.save('air_compressor_model_25_25_3_5e_40_60_2010.06.21.h5')  # tworzy plik
