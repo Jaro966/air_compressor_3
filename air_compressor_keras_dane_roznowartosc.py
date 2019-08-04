@@ -160,11 +160,8 @@ csv_feature, csv_label = arrs_filenames(directory,csv_feature,csv_label)    #fun
 ##BUDOWA MODELU
 dnn_keras_model = models.Sequential()#tworzony jest sekwencyjny model sieci neuronowej
     #składający się z liniowego stosu warstw
-dnn_keras_model.add(layers.Dense(units=100,input_dim=8,activation='relu'))#tworzona jest warstwa wejściowa
-dnn_keras_model.add(layers.Dense(units=100,activation='relu'))#druga warstwa
-dnn_keras_model.add(layers.Dense(units=100,activation='relu'))#druga warstwa
-dnn_keras_model.add(layers.Dense(units=100,activation='relu'))#druga warstwa
-dnn_keras_model.add(layers.Dense(units=100,activation='relu'))#druga warstwa
+dnn_keras_model.add(layers.Dense(units=25,input_dim=8,activation='relu'))#tworzona jest warstwa wejściowa
+dnn_keras_model.add(layers.Dense(units=25,activation='relu'))#druga warstwa
 dnn_keras_model.add(layers.Dense(units=3,activation='softmax'))#trzecia warstwa - wyjściowa
 ##UCZENIE I TESTOWANIE MODELU
 dnn_keras_model.compile(optimizer='adam',loss='sparse_categorical_crossentropy', metrics=['accuracy'])  #konfiguracja
