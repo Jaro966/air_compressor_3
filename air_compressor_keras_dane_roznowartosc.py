@@ -71,7 +71,7 @@ def feat_and_labe(file_features, file_labels):
                                                                         #są dane typu labels
                                                                         # z plików typu csv
         compressor_labels = compressor_labels.append(compressor_labels_1)   #do tablicy compressor_labels dodawane są
-                                                                            #dane z tablicy compressor_labels
+                                                                            #dane z tablicy compressor_labels_1
         i = i + 1   #zwększany jest licznik
 
     #funkcja normalizująca dane (ustawiająca wartości w zakresie 0-1)
