@@ -1,6 +1,9 @@
-##Program eliminuje w danych próbki powtarzające się
-##Liczba próbek została obniżona o ponad połowę
-##Nie widać praktycznie różnicy w dokładności
+##Program jest integralną częścią pracy dyplomowej
+##"Detekcja uszkodzeń kompresora przemysłowego przy wykorzystaniu sieci neuronowych"
+##Autor: Jarosław Gralak (nr indeksu 280618)
+##Wydział Mechatroniki Politechniki Warszawskiej
+##Kierunek Automatyka, Robotyka i Informatyka Przemysłowa
+##8 grudnia 2019
 
 
 import pandas as pd
